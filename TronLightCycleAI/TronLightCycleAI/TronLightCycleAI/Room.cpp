@@ -7,6 +7,8 @@
 
 Room::Room()
 {
+    id = roomID++;
+    m_exitIndex.clear();
 }
 
 
@@ -80,6 +82,32 @@ void Room::BuildRoom(vector<MapNode>& mapNodeList, int rows, int columns, fstrea
             AddNode(startRow + 1, startColumn);
         }
 
+        ////////////////////////////////////////////////////////
+        //////// look for exits ////////////////////////////////
+        if (mapNodeList[topIndex].GetStructure() == HALLWAY)
+        {
+            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            m_exitIndex.push_back(currentNodeIndex);
+        }
+
+        if (mapNodeList[bottomIndex].GetStructure() == HALLWAY)
+        {
+            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            m_exitIndex.push_back(currentNodeIndex);
+        }
+        
+        if (mapNodeList[leftIndex].GetStructure() == HALLWAY)
+        {
+            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            m_exitIndex.push_back(currentNodeIndex);
+        }
+        
+        if (mapNodeList[rightIndex].GetStructure() == HALLWAY)
+        {
+            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            m_exitIndex.push_back(currentNodeIndex);
+        }
+
         //worldMapLog << "Update Size: " << m_nodeList.size() << endl;
         currentNodeIndex++;
     }
@@ -93,6 +121,11 @@ void Room::PrintRoom(fstream& worldMapLog)
     for (auto i = 0; i < m_nodeList.size(); i++)
     {
         worldMapLog << "Room Tile: " << m_nodeList[i].GetRow() << " " << m_nodeList[i].GetColumn() << endl;
+    }
+
+    for (auto j = 0; j < m_exitIndex.size(); j++)
+    {
+        worldMapLog << "Exit Tile: " << m_nodeList[m_exitIndex[j]].GetRow() << " " << m_nodeList[m_exitIndex[j]].GetColumn() << endl;
     }
 
     worldMapLog << "Done Printing Room" << endl;

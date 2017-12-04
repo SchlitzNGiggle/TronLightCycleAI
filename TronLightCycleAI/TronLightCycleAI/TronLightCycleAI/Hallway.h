@@ -5,6 +5,8 @@
 
 using namespace std;
 
+static int hallwayID = 0;
+
 class Hallway
 {
 public:
@@ -17,6 +19,7 @@ public:
     void PrintHallway(fstream& worldMapLog);
 
 private:
-    vector<Node> m_hallwayNodes;;
+    vector<Node> m_hallwayNodes;
+    int id;
 };
 

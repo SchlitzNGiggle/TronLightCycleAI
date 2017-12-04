@@ -5,6 +5,8 @@
 
 using namespace std;
 
+static int roomID = 0;
+
 class Room
 {
 public:
@@ -19,6 +21,8 @@ public:
 
 private:
 
+    vector<int> m_exitIndex;
     vector<Node> m_nodeList;
+    int id;
 };
 

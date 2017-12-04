@@ -5,6 +5,7 @@
 
 Hallway::Hallway()
 {
+    id = hallwayID++;
 }
 
 

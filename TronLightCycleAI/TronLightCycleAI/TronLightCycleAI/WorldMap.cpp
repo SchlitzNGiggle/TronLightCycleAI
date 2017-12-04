@@ -233,10 +233,10 @@ void WorldMap::ProcessRooms()
     }
 
     m_worldMapLog << m_roomList.size() << " Rooms made." << endl;
-    //for (auto i = 0; i < m_roomList.size(); i++)
-    //{
-    //    m_roomList[i].PrintRoom(m_worldMapLog);
-    //}
+    for (auto i = 0; i < m_roomList.size(); i++)
+    {
+        m_roomList[i].PrintRoom(m_worldMapLog);
+    }
 }
 
 void WorldMap::ProcessHallways()
@@ -262,10 +262,10 @@ void WorldMap::ProcessHallways()
     }
 
     m_worldMapLog << m_hallwayList.size() << " Hallways built." << endl;
-    for (auto i = 0; i < m_hallwayList.size(); i++)
-    {
-        m_hallwayList[i].PrintHallway(m_worldMapLog);
-    }
+    //for (auto i = 0; i < m_hallwayList.size(); i++)
+    //{
+    //    m_hallwayList[i].PrintHallway(m_worldMapLog);
+    //}
 }
 
 bool WorldMap::IsTileInRoomList(int row, int column)
