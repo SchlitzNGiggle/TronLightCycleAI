@@ -8,7 +8,7 @@ public:
     ~Node();
 
     void SetCoordinates(int row, int column);
-    inline bool HasSameCoordinates(int row, int column) { return (m_row == row) && (m_column == column); }
+    bool HasSameCoordinates(int row, int column);
     int GetRow() { return m_row; }
     int GetColumn() { return m_column; }
 

@@ -38,7 +38,7 @@ bool Room::Contains(int row, int column)
 void Room::BuildRoom(vector<MapNode>& mapNodeList, int rows, int columns, fstream& worldMapLog)
 {
     int currentNodeIndex = 0;
-    worldMapLog << "Starting Size: " << m_nodeList.size() << endl;
+    //worldMapLog << "Starting Size: " << m_nodeList.size() << endl;
     while (currentNodeIndex < m_nodeList.size())
     {
         int startRow = m_nodeList[currentNodeIndex].GetRow();
@@ -48,39 +48,39 @@ void Room::BuildRoom(vector<MapNode>& mapNodeList, int rows, int columns, fstrea
         int rightIndex = (startRow * rows) + (startColumn + 1);
         int bottomIndex = ((startRow + 1) * rows) + startColumn;
 
-        worldMapLog << "Checking Node: " << startRow - 1 << " " << startColumn << endl;
+        //worldMapLog << "Checking Node: " << startRow - 1 << " " << startColumn << endl;
         if ( (mapNodeList[topIndex].GetStructure() == ROOM)
              && (!Contains(startRow - 1, startColumn)) )
         {
-            worldMapLog << "Adding Node: " << startRow - 1 << " " << startColumn << endl;
+            //worldMapLog << "Adding Node: " << startRow - 1 << " " << startColumn << endl;
             AddNode(startRow - 1, startColumn);
         }
 
-        worldMapLog << "Checking Node: " << startRow << " " << startColumn - 1 << endl;
+        //worldMapLog << "Checking Node: " << startRow << " " << startColumn - 1 << endl;
         if ((mapNodeList[leftIndex].GetStructure() == ROOM)
             && (!Contains(startRow, startColumn - 1)))
         {
-            worldMapLog << "Adding Node: " << startRow << " " << startColumn - 1 << endl;
+            //worldMapLog << "Adding Node: " << startRow << " " << startColumn - 1 << endl;
             AddNode(startRow, startColumn - 1);
         }
 
-        worldMapLog << "Checking Node: " << startRow << " " << startColumn + 1 << endl;
+        //worldMapLog << "Checking Node: " << startRow << " " << startColumn + 1 << endl;
         if ((mapNodeList[rightIndex].GetStructure() == ROOM)
             && (!Contains(startRow, startColumn + 1)))
         {
-            worldMapLog << "Adding Node: " << startRow << " " << startColumn + 1 << endl;
+            //worldMapLog << "Adding Node: " << startRow << " " << startColumn + 1 << endl;
             AddNode(startRow, startColumn + 1);
         }
 
-        worldMapLog << "Checking Node: " << startRow + 1 << " " << startColumn << endl;
+        //worldMapLog << "Checking Node: " << startRow + 1 << " " << startColumn << endl;
         if ((mapNodeList[bottomIndex].GetStructure() == ROOM)
             && (!Contains(startRow + 1, startColumn)))
         {
-            worldMapLog << "Adding Node: " << startRow + 1 << " " << startColumn << endl;
+            //worldMapLog << "Adding Node: " << startRow + 1 << " " << startColumn << endl;
             AddNode(startRow + 1, startColumn);
         }
 
-        worldMapLog << "Update Size: " << m_nodeList.size() << endl;
+        //worldMapLog << "Update Size: " << m_nodeList.size() << endl;
         currentNodeIndex++;
     }
 }

@@ -23,6 +23,6 @@ enum structureType
 {
     NONE,
     RoomTile,
-    Hallway,
+    HallwayTile,
     Intersection,
 };

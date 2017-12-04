@@ -37,7 +37,7 @@ char MapNode::GetStructure()
     }
     break;
 
-    case structureType::Hallway:
+    case structureType::HallwayTile:
     {
         return HALLWAY;
     }
@@ -60,7 +60,7 @@ void MapNode::SetRoom()
 
 void MapNode::SetHallway()
 {
-    m_myStructureType = structureType::Hallway;
+    m_myStructureType = structureType::HallwayTile;
 }
 
 void MapNode::SetIntersection()

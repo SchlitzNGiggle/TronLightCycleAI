@@ -44,31 +44,45 @@ void WorldMap::TagRooms()
                 continue;
             }
 
+            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER1)
+            {
+                continue;
+            }
+
+            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER2)
+            {
+                continue;
+            }
+
             validNeighborCount = 0;
             topClear = false;
             bottomClear = false;
             leftClear = false;
             rightClear = false;
 
-            if (GetNorthTileType(i, j) == FLOOR)
+            char currentTypeType = GetNorthTileType(i, j);
+            if (currentTypeType == FLOOR)
             {
                 validNeighborCount++;
                 topClear = true;
             }
 
-            if (GetEastTileType(i, j) == FLOOR)
+            currentTypeType = GetEastTileType(i, j);
+            if (currentTypeType == FLOOR)
             {
                 validNeighborCount++;
                 rightClear = true;
             }
 
-            if (GetSouthTileType(i, j) == FLOOR)
+            currentTypeType = GetSouthTileType(i, j);
+            if (currentTypeType == FLOOR)
             {
                 validNeighborCount++;
                 bottomClear = true;
             }
 
-            if (GetWestTileType(i, j) == FLOOR)
+            currentTypeType = GetWestTileType(i, j);
+            if (currentTypeType == FLOOR)
             {
                 validNeighborCount++;
                 leftClear = true;
@@ -194,50 +208,95 @@ void WorldMap::TagIntersections()
 
 void WorldMap::ProcessRooms()
 {
-    m_worldMapLog << "Trying to build rooms" << endl;
+    //m_worldMapLog << "Trying to build rooms" << endl;
+    m_roomList.clear();
+
     for (int i = 0; i < m_rows; i++)
     {
         for (int j = 0; j < m_columns; j++)
         {
             int realRow = i * m_rows;
+            //m_worldMapLog << "Checking: " << i << " " << j << endl;
             if ( (m_nodeList[realRow + j].GetStructure() == ROOM)
                 && !IsTileInRoomList(i, j) )
             {
-                m_worldMapLog << "Building a room: " << i << " " << j << endl;
+                //m_worldMapLog << "Size of room list: " << m_roomList.size() << endl;
+                //m_worldMapLog << "Building a room: " << i << " " << j << endl;
                 // build a new room
                 Room* room = new Room();
                 room->AddNode(i, j);
                 room->BuildRoom(m_nodeList, m_rows, m_columns, m_worldMapLog);
+                //room->PrintRoom(m_worldMapLog);
                 m_roomList.push_back(*room);
             }
         }
     }
 
-    for (auto i = 0; i < m_roomList.size(); i++)
+    m_worldMapLog << m_roomList.size() << " Rooms made." << endl;
+    //for (auto i = 0; i < m_roomList.size(); i++)
+    //{
+    //    m_roomList[i].PrintRoom(m_worldMapLog);
+    //}
+}
+
+void WorldMap::ProcessHallways()
+{
+    m_hallwayList.clear();
+    //m_worldMapLog << "Trying to build hallways" << endl;
+    for (int i = 0; i < m_rows; i++)
     {
-        m_roomList[i].PrintRoom(m_worldMapLog);
+        for (int j = 0; j < m_columns; j++)
+        {
+            int realRow = i * m_rows;
+            if ((m_nodeList[realRow + j].GetStructure() == HALLWAY)
+                && !IsTileInHallwayList(i, j))
+            {
+                //m_worldMapLog << "Building a Hallway: " << i << " " << j << endl;
+                // build a new room
+                Hallway* hallway = new Hallway();
+                hallway->AddNode(i, j);
+                hallway->BuildHallway(m_nodeList, m_rows, m_columns, m_worldMapLog);
+                m_hallwayList.push_back(*hallway);
+            }
+        }
+    }
+
+    m_worldMapLog << m_hallwayList.size() << " Hallways built." << endl;
+    for (auto i = 0; i < m_hallwayList.size(); i++)
+    {
+        m_hallwayList[i].PrintHallway(m_worldMapLog);
     }
 }
 
 bool WorldMap::IsTileInRoomList(int row, int column)
 {
-    bool tileFound = false;
-
     auto roomListSize = m_roomList.size();
-    if (roomListSize > 0)
+    for (int i = 0; i < roomListSize; i++)
     {
-        for (auto i = 0; i < roomListSize; i++)
+        if (m_roomList[i].Contains(row, column))
         {
-            tileFound = m_roomList[i].Contains(row, column);
+            return true;
         }
     }
 
-    if (tileFound)
+    return false;
+}
+
+bool WorldMap::IsTileInHallwayList(int row, int column)
+{
+    auto hallwayListSize = m_hallwayList.size();
+    if (hallwayListSize > 0)
     {
-        m_worldMapLog << "Tile Found In List" << endl;
+        for (auto i = 0; i < hallwayListSize; i++)
+        {
+            if (m_hallwayList[i].Contains(row, column))
+            {
+                return true;
+            }
+        }
     }
 
-    return tileFound;
+    return false;
 }
 
 char WorldMap::GetNorthEastTileType(int row, int column)
