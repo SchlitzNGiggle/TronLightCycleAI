@@ -1,8 +1,13 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  Hallway.cpp
+  MapNode.cpp
+  Node.cpp
+  PathNode.cpp
   Room.cpp
+  TronLightCycleAI.cpp
+  WorldMap.cpp
   Generating code
-  2 of 543 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    21 functions had inline decision re-evaluated but remain unchanged
+  All 1077 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  TronLightCycleAI.vcxproj -> C:\Users\Tanya\Source\Repos\TronLightCycleAI\TronLightCycleAI\TronLightCycleAI\TronLightCycleAI\..\..\..\..\..\..\Downloads\tron-engine-master\tron-engine-master\bots\C++\TronLightCycleAI.exe
+  TronLightCycleAI.vcxproj -> C:\Users\smiles\Source\Repos\TronLightCycleAI\TronLightCycleAI\TronLightCycleAI\TronLightCycleAI\..\..\..\..\..\..\Downloads\tron-engine-master\tron-engine-master\bots\C++\TronLightCycleAI.exe
+  TronLightCycleAI.vcxproj -> ..\..\..\..\..\..\Downloads\tron-engine-master\tron-engine-master\bots\C++\TronLightCycleAI.pdb (Full PDB)

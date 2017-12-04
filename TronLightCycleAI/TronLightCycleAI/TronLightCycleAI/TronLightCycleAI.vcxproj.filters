@@ -39,6 +39,9 @@
     <ClInclude Include="MapNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PathNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MapNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

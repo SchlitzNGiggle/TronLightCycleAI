@@ -3,6 +3,7 @@
 
 #include "Node.h"
 #include "MapNode.h"
+#include "PathNode.h"
 
 #define LOGFILE "WorldMap.txt"
 
@@ -12,6 +13,9 @@ WorldMap::WorldMap(int rows, int columns)
     m_columns = columns;
     m_nodeList.reserve(rows * columns);
     m_roomList.reserve(rows * columns);
+    m_hallwayList.reserve(rows * columns);
+    m_player1PathCosts.reserve(m_rows * columns);
+    m_player2PathCosts.reserve(m_rows * columns);
 
     for (int i = 0; i < rows * columns; i++)
     {
@@ -40,16 +44,6 @@ void WorldMap::TagRooms()
         for (int j = 0; j < m_columns; j++)
         {
             if (m_nodeList[(i * m_rows) + j].GetTileType() == WALL)
-            {
-                continue;
-            }
-
-            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER1)
-            {
-                continue;
-            }
-
-            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER2)
             {
                 continue;
             }
@@ -125,16 +119,6 @@ void WorldMap::TagHallway()
                 continue;
             }
 
-            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER1)
-            {
-                continue;
-            }
-
-            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER2)
-            {
-                continue;
-            }
-
             if (m_nodeList[(i * m_rows) + j].GetStructure() == ROOM)
             {
                 continue;
@@ -155,16 +139,6 @@ void WorldMap::TagIntersections()
         for (int j = 0; j < m_columns; j++)
         {
             if (m_nodeList[(i * m_rows) + j].GetTileType() == WALL)
-            {
-                continue;
-            }
-
-            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER1)
-            {
-                continue;
-            }
-
-            if (m_nodeList[(i * m_rows) + j].GetTileType() == PLAYER2)
             {
                 continue;
             }
@@ -233,10 +207,93 @@ void WorldMap::ProcessRooms()
     }
 
     m_worldMapLog << m_roomList.size() << " Rooms made." << endl;
+    //for (auto i = 0; i < m_roomList.size(); i++)
+    //{
+    //    m_roomList[i].PrintRoom(m_worldMapLog);
+    //}
+}
+
+int WorldMap::GetRoomID(int row, int column)
+{
     for (auto i = 0; i < m_roomList.size(); i++)
     {
-        m_roomList[i].PrintRoom(m_worldMapLog);
+        if (m_roomList[i].Contains(row, column))
+        {
+            return m_roomList[i].GetID();
+        }
     }
+    return 0;
+}
+
+int WorldMap::GetHallwayID(int row, int column)
+{
+    for (auto i = 0; i < m_hallwayList.size(); i++)
+    {
+        m_worldMapLog << "Test Hallway: " << i << endl;
+        if (m_hallwayList[i].Contains(row, column))
+        {
+            m_worldMapLog << "Found In: " << i << endl;
+            return m_hallwayList[i].GetID();
+        }
+    }
+    return 0;
+}
+
+void WorldMap::ProcessSimplePathCosts()
+{
+    m_player1PathCosts.clear();
+    
+}
+
+int WorldMap::GenerateDecision()
+{
+    int player1RoomID = -1;
+    int player1HallwayID = -1;
+    int player1AtIntersection = false;
+
+    int player2RoomID = -1;
+    int player2HallwayID = -1;
+    int player2AtIntersection = false;
+
+
+    if (m_nodeList[m_player1NodeIndex].GetStructure() == ROOM)
+    {
+        player1RoomID = GetRoomID(m_player1PosRow, m_player1PosColumn);
+        m_worldMapLog << "Player 1 Found In Room: " << player1RoomID << endl;
+    }
+    else if (m_nodeList[m_player1NodeIndex].GetStructure() == HALLWAY)
+    {
+        player1HallwayID = GetHallwayID(m_player1PosRow, m_player1PosColumn);
+        m_worldMapLog << "Player 1 Found In Hallway: " << player1HallwayID << endl;
+    }
+    else
+    {
+        player1AtIntersection = true;
+        m_worldMapLog << "Player 1 Found In At Intersection" << endl;
+    }
+
+    if (m_nodeList[m_player2NodeIndex].GetStructure() == ROOM)
+    {
+        player2RoomID = GetRoomID(m_player2PosRow, m_player2PosColumn);
+        m_worldMapLog << "Player 2 Found In Room: " << player2RoomID << endl;
+    }
+    else if (m_nodeList[m_player2NodeIndex].GetStructure() == HALLWAY)
+    {
+        player2HallwayID = GetHallwayID(m_player2PosRow, m_player2PosColumn);
+        m_worldMapLog << "Player 2 Found In Hallway: " << player2HallwayID << endl;
+    }
+    else
+    {
+        player2AtIntersection = true;
+        m_worldMapLog << "Player 2 Found In At Intersection" << endl;
+    }
+
+    if (player2RoomID == player1RoomID)
+    {
+
+    }
+
+    return NORTH;
 }
 
 void WorldMap::ProcessHallways()
@@ -388,6 +445,19 @@ void WorldMap::AddNode(const UINT row, const UINT column, char tileType)
     }
 
     m_nodeList[nodeIndex].Initialize(row, column, tileType);
+
+    if (tileType == PLAYER1)
+    {
+        m_player1PosRow = row;
+        m_player1PosColumn = column;
+        m_player1NodeIndex = nodeIndex;
+    }
+    else if (tileType == PLAYER2)
+    {
+        m_player2PosRow = row;
+        m_player2PosColumn = column;
+        m_player2NodeIndex = nodeIndex;
+    }
 
     //m_worldMapLog << "Update Nodes: Row: " << row << " Column: " << column << " TileType: " << tileType << endl;
 }

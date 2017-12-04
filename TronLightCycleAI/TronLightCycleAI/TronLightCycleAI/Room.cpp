@@ -86,25 +86,25 @@ void Room::BuildRoom(vector<MapNode>& mapNodeList, int rows, int columns, fstrea
         //////// look for exits ////////////////////////////////
         if (mapNodeList[topIndex].GetStructure() == HALLWAY)
         {
-            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            //worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
             m_exitIndex.push_back(currentNodeIndex);
         }
 
         if (mapNodeList[bottomIndex].GetStructure() == HALLWAY)
         {
-            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            //worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
             m_exitIndex.push_back(currentNodeIndex);
         }
         
         if (mapNodeList[leftIndex].GetStructure() == HALLWAY)
         {
-            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            //worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
             m_exitIndex.push_back(currentNodeIndex);
         }
         
         if (mapNodeList[rightIndex].GetStructure() == HALLWAY)
         {
-            worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
+            //worldMapLog << "Exit Node: " << startRow << " " << startColumn << endl;
             m_exitIndex.push_back(currentNodeIndex);
         }
 

@@ -18,6 +18,7 @@ public:
     void BuildRoom(vector<MapNode>& mapNodeList, int rows, int columns, fstream& worldMapLog);
     void PrintRoom(fstream& worldMapLog);
     int GetSize() { return static_cast<int>(m_nodeList.size()); }
+    int GetID() { return id; }
 
 private:
 

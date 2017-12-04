@@ -17,6 +17,7 @@ public:
     bool Contains(int row, int column);
     void BuildHallway(vector<MapNode>& mapNodeList, int rows, int columns, fstream& worldMapLog);
     void PrintHallway(fstream& worldMapLog);
+    int GetID() { return id; }
 
 private:
     vector<Node> m_hallwayNodes;
