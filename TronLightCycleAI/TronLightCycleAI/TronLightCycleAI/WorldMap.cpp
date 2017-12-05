@@ -229,10 +229,10 @@ int WorldMap::GetHallwayID(int row, int column)
 {
     for (auto i = 0; i < m_hallwayList.size(); i++)
     {
-        m_worldMapLog << "Test Hallway: " << i << endl;
+        //m_worldMapLog << "Test Hallway: " << i << endl;
         if (m_hallwayList[i].Contains(row, column))
         {
-            m_worldMapLog << "Found In: " << i << endl;
+            //m_worldMapLog << "Found In: " << i << endl;
             return m_hallwayList[i].GetID();
         }
     }
@@ -242,7 +242,102 @@ int WorldMap::GetHallwayID(int row, int column)
 void WorldMap::ProcessSimplePathCosts()
 {
     m_player1PathCosts.clear();
+    for (auto i = 0; i < m_rows; i++)
+    {
+        for (auto j = 0; j < m_columns; j++)
+        {
+            PathNode* node = new PathNode();
+            node->SetCoordinates(i * m_rows, j);
+            node->SetCost(-1);
+            m_player1PathCosts.push_back(*node);
+        } 
+    }
+
+    m_worldMapLog << "Adding Player 1 Index for Node: " << m_player1PosRow << " " << m_player1PosColumn << " Index: " << m_player1PosRow * m_rows + m_player1PosColumn << endl;
+    vector<PathNode> openNodeList;
+    openNodeList.reserve(m_rows * m_columns);
+
+    PathNode* player1Node = new PathNode();
+    player1Node->SetCoordinates(m_player1PosRow, m_player1PosColumn);
+    player1Node->SetCost(0);
+
+    openNodeList.push_back(*player1Node);
     
+    m_player1PathCosts[m_player1PosRow * m_rows + m_player1PosColumn].SetCost(0);
+
+    int currentIndex = 0;
+    while (currentIndex < openNodeList.size())
+    {
+        int bottomIndex = (openNodeList[currentIndex].GetRow() + 1) * m_rows + openNodeList[currentIndex].GetColumn();
+        if ( (m_nodeList[bottomIndex].GetTileType() == FLOOR)
+            && (m_player1PathCosts[bottomIndex].GetCost() < 0) )
+        {
+            PathNode* topNode = new PathNode();
+            topNode->SetCoordinates(openNodeList[currentIndex].GetRow() + 1, openNodeList[currentIndex].GetColumn());
+            openNodeList.push_back(*topNode);
+
+            m_player1PathCosts[bottomIndex].SetCost(openNodeList[currentIndex].GetCost() + 1);
+        }
+
+        int topIndex = (openNodeList[currentIndex].GetRow() - 1) * m_rows + openNodeList[currentIndex].GetColumn();
+        if ( (m_nodeList[topIndex].GetTileType() == FLOOR)
+            && (m_player1PathCosts[topIndex].GetCost() < 0) )
+        {
+            PathNode* topNode = new PathNode();
+            topNode->SetCoordinates(openNodeList[currentIndex].GetRow() - 1, openNodeList[currentIndex].GetColumn());
+            openNodeList.push_back(*topNode);
+
+            m_player1PathCosts[topIndex].SetCost(openNodeList[currentIndex].GetCost() + 1);
+        }
+
+        int rightIndex = (openNodeList[currentIndex].GetRow()) * m_rows + openNodeList[currentIndex].GetColumn() + 1;
+        if ( (m_nodeList[rightIndex].GetTileType() == FLOOR)
+            && (m_player1PathCosts[rightIndex].GetCost() < 0) )
+        {
+            PathNode* topNode = new PathNode();
+            topNode->SetCoordinates(openNodeList[currentIndex].GetRow(), openNodeList[currentIndex].GetColumn() + 1);
+            openNodeList.push_back(*topNode);
+
+            m_player1PathCosts[rightIndex].SetCost(openNodeList[currentIndex].GetCost() + 1);
+        }
+
+        int leftIndex = (openNodeList[currentIndex].GetRow()) * m_rows + openNodeList[currentIndex].GetColumn() - 1;
+        if ( (m_nodeList[leftIndex].GetTileType() == FLOOR)
+            && (m_player1PathCosts[leftIndex].GetCost() < 0) )
+        {
+            PathNode* topNode = new PathNode();
+            topNode->SetCoordinates(openNodeList[currentIndex].GetRow(), openNodeList[currentIndex].GetColumn() - 1);
+            openNodeList.push_back(*topNode);
+
+            m_player1PathCosts[leftIndex].SetCost(openNodeList[currentIndex].GetCost() + 1);
+        }
+
+        currentIndex++;
+    }
+
+    m_worldMapLog << "Printing Player1 Node Costs" << endl;
+    for (auto i = 0; i < m_rows; i++)
+    {
+        for (auto j = 0; j < m_columns; j++)
+        {
+            m_worldMapLog << m_player1PathCosts[i * m_rows + j].GetCost() << " ";
+        }
+
+        m_worldMapLog << endl;
+    }
+
+    m_worldMapLog << endl;
+
+    //m_player2PathCosts.clear();
+    //for (auto i = 0; i < m_rows; i++)
+    //{
+    //    for (auto j = 0; j < m_columns; j++)
+    //    {
+    //        PathNode* node = new PathNode();
+    //        node->SetCoordinates(i * m_rows, j);
+    //        m_player2PathCosts.push_back(*node);
+    //    }
+    //}
 }
 
 int WorldMap::GenerateDecision()
