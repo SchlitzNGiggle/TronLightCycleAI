@@ -6,6 +6,7 @@
 #include "Room.h"
 #include "Hallway.h"
 #include "PathNode.h"
+#include <chrono>
 
 using namespace std;
 
@@ -31,6 +32,15 @@ public:
     int GetColumnCount() const { return m_columns; }
 
     int GenerateDecision();
+    bool GetPath(int startRow, int startColumn, int endRow, int endColumn, vector<PathNode>& path);
+    int GetDistance(int startRow, int startColumn, int endRow, int endColumn);
+
+    void SetTime(std::chrono::time_point<std::chrono::system_clock> time) { m_time = time; }
+    void PrintTime();
+
+    const vector<Room>& GetRooms() { return m_roomList; }
+    const vector<Hallway>& GetHallways() { return m_hallwayList; }
+    const vector<MapNode> GetNodeList() { return m_nodeList; }
 
 private:
     vector<MapNode> m_nodeList;
@@ -50,6 +60,16 @@ private:
 
     bool IsTileInRoomList(int row, int column);
     bool IsTileInHallwayList(int row, int column);
+    bool IsNodeInList(const vector<PathNode>& list, int row, int column);
+    bool CanPlayer2ReachTile(int row, int columns);
+
+    struct CompareNode
+    {
+        bool operator()(const PathNode& lhs, const PathNode &rhs) const
+        {
+            return lhs.GetDistance() < rhs.GetDistance();
+        }
+    };
 
     int GetRoomID(int row, int column);
     int GetHallwayID(int row, int column);
@@ -64,6 +84,8 @@ private:
     int m_player2PosRow;
     int m_player2PosColumn;
     int m_player2NodeIndex;
+
+    std::chrono::time_point<std::chrono::system_clock> m_time;
 
     fstream m_worldMapLog;
 };

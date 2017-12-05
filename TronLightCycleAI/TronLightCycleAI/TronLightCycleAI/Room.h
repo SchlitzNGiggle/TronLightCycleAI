@@ -19,6 +19,7 @@ public:
     void PrintRoom(fstream& worldMapLog);
     int GetSize() { return static_cast<int>(m_nodeList.size()); }
     int GetID() { return id; }
+    bool HasExits() { return m_exitIndex.size() > 0; }
 
 private:
 

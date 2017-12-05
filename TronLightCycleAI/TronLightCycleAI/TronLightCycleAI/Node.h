@@ -9,8 +9,8 @@ public:
 
     void SetCoordinates(int row, int column);
     bool HasSameCoordinates(int row, int column);
-    int GetRow() { return m_row; }
-    int GetColumn() { return m_column; }
+    int GetRow() const { return m_row; }
+    int GetColumn() const { return m_column; }
 
 protected:
     int m_row;

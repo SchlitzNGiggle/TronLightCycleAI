@@ -45,10 +45,10 @@ void Room::BuildRoom(vector<MapNode>& mapNodeList, int rows, int columns, fstrea
     {
         int startRow = m_nodeList[currentNodeIndex].GetRow();
         int startColumn = m_nodeList[currentNodeIndex].GetColumn();
-        int topIndex = ((startRow - 1) * rows) + startColumn;
-        int leftIndex = (startRow * rows) + (startColumn - 1);
-        int rightIndex = (startRow * rows) + (startColumn + 1);
-        int bottomIndex = ((startRow + 1) * rows) + startColumn;
+        int topIndex = ((startRow - 1) * columns) + startColumn;
+        int leftIndex = (startRow * columns) + (startColumn - 1);
+        int rightIndex = (startRow * columns) + (startColumn + 1);
+        int bottomIndex = ((startRow + 1) * columns) + startColumn;
 
         //worldMapLog << "Checking Node: " << startRow - 1 << " " << startColumn << endl;
         if ( (mapNodeList[topIndex].GetStructure() == ROOM)
